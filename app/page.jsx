@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Home() {
-  // Pusher.logToConsole = true;
+  Pusher.logToConsole = true;
   const [response, setRes] = useState();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Home() {
     var channel = pusher.subscribe("my-channel");
     channel.bind("my-event", function (data) {
       console.log(response);
-      setRes([ data ]);
+      setRes([data]);
       console.log(response);
     });
     return () => {
@@ -24,31 +24,26 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       await axios.post("/api/sock", {
         sender: e.target.user.value,
         message: e.target.message.value,
       });
-    }
-    catch{
-      e => console.log(e)
+    } catch {
+      (e) => console.log(e);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <form onSubmit={handleSubmit} className="text-black text-3xl">
-        <input type="text" name="user" />
-        <input type="text" name="message" />
-        <input type="submit" value={"submit"} className="text-white" />
+        <input type="text" name="user" className="m-4 border-red-50 p-4" />
+        <br/>
+        <input type="text" name="message" className="m-4 border-red-50 p-4"/>
+        <br/>
+        <input type="submit" value={"Submit"} className="text-white font-bold m-4 text-4xl" />
       </form>
       <div className="flex flex-col ">
-        {response.map((chat) => {
-          <>
-            <div className="text-5xl text-pink-300">{chat.sender} :</div>
-            <div className="text-5xl text-pink-300">{chat.message}</div>
-          </>;
-        })}
       </div>
     </div>
   );

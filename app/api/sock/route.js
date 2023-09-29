@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import Pusher from "pusher";
 
-export const pusher = new Pusher({
+const pusher = new Pusher({
   appId: process.env.app_id,
   key: process.env.key,
   secret: process.env.secret,
@@ -9,6 +8,7 @@ export const pusher = new Pusher({
   useTLS: true,
 });
 
+// when we make post req to this api, it sends the data to the server
 export async function POST(req) {
   const { sender, message } = await req.json();
   await pusher.trigger("my-channel", "my-event", {
